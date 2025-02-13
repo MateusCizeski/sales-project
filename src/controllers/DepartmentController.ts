@@ -1,28 +1,33 @@
-import { Controller, Post, Put, Delete, Body, Param } from '@nestjs/common';
-import { CreateDepartmentService } from 'src/services/department/CreateDepartmentService';
-import { UpdateDepartmentService } from 'src/services/department/UpdateDepartmentService';
-import { RemoveDepartmentService } from 'src/services/department/RemoveDepartmentService';
+import { Controller, Get, Post, Put, Delete, Body, Param } from '@nestjs/common';
+import { DepartmentService } from 'src/services/DepartmentService';
+import { CreateDepartmentDto, UpdateDepartmentDto } from 'src/dtos/department.dto';
 
 @Controller('/departments')
-export class DepartmentsController {
-    constructor(
-        private readonly createDepartmentService: CreateDepartmentService,
-        private readonly updateDepartmentService: UpdateDepartmentService,
-        private readonly removeDepartmentService: RemoveDepartmentService
-    ) {}
+export class DepartmentController {
+    constructor(private readonly departmentService: DepartmentService) {}
+
+    @Get()
+    async findAll() {
+        return await this.departmentService.findAll();
+    }
+
+    @Get(':id')
+    async findById(@Param('id') id: string) {
+        return await this.departmentService.findById(id);
+    }
 
     @Post()
-    async create(@Body('name') name: string) {
-        return await this.createDepartmentService.execute(name);
+    async create(@Body() data: CreateDepartmentDto) {
+        return await this.departmentService.create(data);
     }
 
     @Put(':id')
-    async update(@Param('id') id: string, @Body('name') name: string) {
-        return await this.updateDepartmentService.execute(id, name);
+    async update(@Param('id') id: string, @Body() data: UpdateDepartmentDto) {
+        return await this.departmentService.update(id, data);
     }
 
     @Delete(':id')
     async remove(@Param('id') id: string) {
-        return await this.removeDepartmentService.execute(id);
+        return await this.departmentService.remove(id);
     }
 }

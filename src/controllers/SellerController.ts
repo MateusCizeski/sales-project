@@ -1,28 +1,23 @@
 import { Controller, Post, Put, Delete, Body, Param } from '@nestjs/common';
-import { CreateSellerService } from 'src/services/saller/CreateSellerService';
-import { RemoveSellerService } from 'src/services/saller/RemoveSellerService';
-import { UpdateSellerService } from 'src/services/saller/UpdateSellerService';
+import { SellerService } from 'src/services/SellerService';
+import { CreateSellerRequest, UpdateSellerRequest } from 'src/dtos/seller.dto'; // ✅ Importando as interfaces
 
 @Controller('/sellers')
 export class SellersController {
-    constructor(
-        private readonly createSellerService: CreateSellerService,
-        private readonly removeSellerService: RemoveSellerService,
-        private readonly updateSellerService: UpdateSellerService
-    ) {}
+    constructor(private readonly sellerService: SellerService) {}
 
     @Post()
-    async create(@Body('name') name: string) {
-        return await this.createSellerService.execute(name);
+    async create(@Body() data: CreateSellerRequest) {
+        return this.sellerService.create(data);
     }
 
     @Put(':id')
-    async update(@Param('id') id: string, @Body('name') name: string) {
-        return await this.updateSellerService.execute(id, name);
+    async update(@Param('id') sellerId: string, @Body() data: Omit<UpdateSellerRequest, 'sellerId'>) {
+        return this.sellerService.update({ sellerId, ...data });
     }
 
     @Delete(':id')
     async remove(@Param('id') id: string) {
-        return await this.removeSellerService.execute(id);
+        return this.sellerService.remove(id);
     }
 }
