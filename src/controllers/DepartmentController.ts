@@ -1,8 +1,8 @@
 import { Controller, Get, Post, Put, Delete, Body, Param } from '@nestjs/common';
 import { DepartmentService } from 'src/services/DepartmentService';
-import { CreateDepartmentDto, UpdateDepartmentDto } from 'src/dtos/department.dto';
+import { CreateDepartmentDto, UpdateDepartmentDto } from 'src/dtos/Department.dto';
 
-@Controller('/departments')
+@Controller('departments')
 export class DepartmentController {
     constructor(private readonly departmentService: DepartmentService) {}
 

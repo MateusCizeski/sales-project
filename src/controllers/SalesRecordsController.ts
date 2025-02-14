@@ -1,7 +1,8 @@
-import { Controller, Get, Query } from "@nestjs/common";
+import { Body, Controller, Get, Post, Query } from "@nestjs/common";
+import { CreateSalesRecord } from "src/dtos/SalesRecord.dto";
 import { SalesRecordService } from "src/services/SalesRecordService";
 
-@Controller('/salesrecords')
+@Controller('salesrecords')
 export class SalesRecordsController {
     constructor(private readonly salesRecordService: SalesRecordService) {}
 
@@ -27,5 +28,10 @@ export class SalesRecordsController {
 
         const result = await this.salesRecordService.findByDateGrouping(min, max);
         return { minDate: min.toISOString().split('T')[0], maxDate: max.toISOString().split('T')[0], result };
+    }
+
+    @Post()
+    async create(@Body() createSalesRecordDto: CreateSalesRecord) {
+        return await this.salesRecordService.create(createSalesRecordDto);
     }
 }

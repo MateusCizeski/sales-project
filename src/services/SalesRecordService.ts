@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { CreateSalesRecord } from 'src/dtos/SalesRecord.dto';
 import prismaClient from 'src/prisma';
 
 @Injectable()
@@ -54,5 +55,16 @@ export class SalesRecordService {
         }, {});
 
         return groupedSales;
+    }
+
+    async create(data: CreateSalesRecord) {
+        return prismaClient.salesRecord.create({
+            data: {
+                date: new Date(data.date),
+                amount: data.amount,
+                status: data.status,
+                sellerId: data.sellerId
+            }
+        });
     }
 }

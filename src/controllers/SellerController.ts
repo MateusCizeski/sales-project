@@ -1,8 +1,8 @@
 import { Controller, Post, Put, Delete, Body, Param } from '@nestjs/common';
 import { SellerService } from 'src/services/SellerService';
-import { CreateSellerRequest, UpdateSellerRequest } from 'src/dtos/seller.dto'; // ✅ Importando as interfaces
+import { CreateSellerRequest, UpdateSellerRequest } from 'src/dtos/Seller.dto';
 
-@Controller('/sellers')
+@Controller('sellers')
 export class SellersController {
     constructor(private readonly sellerService: SellerService) {}
 
